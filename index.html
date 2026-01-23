@@ -109,8 +109,7 @@
             appId: "1:610034577258:web:cd870a6960a697258ebf13"
         };
         
-        // --- আপনার নতুন এবং সঠিক ImgBB API কী ---
-        const IMGBB_API_KEY = "d617dab9d2117228e38549791d42104a"; // অনুগ্রহ করে এখানে আপনার সর্বশেষ নতুন কী বসান
+        const IMGBB_API_KEY = "d617dab9d2117228e38549791d42104a";
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -182,8 +181,7 @@
                     if (result.success) {
                         sendMessage(null, result.data.url);
                     } else {
-                        // এই পরিবর্তিত লাইনটি আমাদের সম্পূর্ণ এরর দেখাবে
-                        alert("ছবি আপলোড করা যায়নি। সম্পূর্ণ এরর: " + JSON.stringify(result));
+                        alert("ছবি আপলোড করা যায়নি। কারণ: " + result.error.message);
                     }
                 })
                 .catch(error => {
