@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   
   <!-- Google Search SEO Meta Tags -->
   <title>Secret Video - Free HD Trending Videos</title>
@@ -40,7 +40,7 @@
       user-select: auto;
     }
 
-    body { background-color: #f4f5f8; color: #1a1a1a; padding-bottom: 110px; overflow-x: hidden; }
+    body { background-color: #f4f5f8; color: #1a1a1a; padding-bottom: 110px; overflow-x: hidden; touch-action: pan-x pan-y; }
 
     /* Preloader CSS */
     #preloader {
@@ -407,6 +407,18 @@
       if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
     };
 
+    // ✅ নতুন: জুম সম্পূর্ণ ব্লক (Ctrl+স্ক্রল, পিঞ্চ জুম, ডাবল ট্যাপ জুম)
+    document.addEventListener('wheel', function(e){ if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
+    document.addEventListener('gesturechange', function(e){ e.preventDefault(); });
+    document.addEventListener('touchmove', function(e){ if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    var __lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e){
+      var now = Date.now();
+      if (now - __lastTouchEnd <= 300) e.preventDefault();
+      __lastTouchEnd = now;
+    }, false);
+
     window.addEventListener('load', function() {
       setTimeout(function() {
         var preloader = document.getElementById('preloader');
@@ -469,6 +481,7 @@
 
     let adUrlData = "";
     let adInterval = 0;
+    let clickAdEnabled = true; // ✅ নতুন: এডমিন প্যানেল থেকে ক্লিক এড ON/OFF কন্ট্রোল
     let nativeAdCodeData = "";
     let allVideos = {};
     let premiumVideos = {};
@@ -485,6 +498,8 @@
       if (config) {
         adUrlData = config.adUrl || "";
         adInterval = config.adInterval !== undefined ? parseInt(config.adInterval) : 0;
+        // ✅ নতুন: এডমিন প্যানেলে টগল সেট না থাকলে ডিফল্ট চালু থাকবে
+        clickAdEnabled = (config.clickAdEnabled === undefined) ? true : (config.clickAdEnabled === "on" || config.clickAdEnabled === true || config.clickAdEnabled === "true");
         nativeAdCodeData = config.nativeAdCode || "";
 
         if (config.topBannerCode) renderAnyAd('topAdBox', config.topBannerCode);
@@ -496,7 +511,7 @@
 
     // Universal Screen Click Handler (Admin Set Interval Popunder Trigger)
     document.addEventListener('click', function(e) {
-      if (!adUrlData) return;
+      if (!adUrlData || !clickAdEnabled) return; // ✅ এডমিন টগল OFF করলে ক্লিক এড বন্ধ
       
       // Ignore clicks on close buttons or inputs to avoid frustrating the user
       if (e.target.closest('.close-modal, input, textarea, select, button, a')) return;
@@ -504,7 +519,7 @@
       const lastClickAdTime = localStorage.getItem('lastClickAdTime') || 0;
       const now = Date.now();
 
-      // ✅ FIX: এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল এখন সত্যিই কাজ করবে (0 = প্রতি ক্লিকে)
+      // এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল (0 = প্রতি ক্লিকে)
       const intervalMs = adInterval > 0 ? adInterval * 60 * 1000 : 0;
       if (now - lastClickAdTime >= intervalMs) {
         let targetUrl = adUrlData.trim();
@@ -699,7 +714,8 @@
 
         keys.forEach((key, index) => {
           const item = premiumVideos[key];
-          if (item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+          if (!item || typeof item !== 'object') return; // ✅ ভাঙা ডেটা থাকলে স্কিপ — পুরো লিস্ট আর লুকাবে না
+          if ((item.title || '').toLowerCase().includes(searchQuery.toLowerCase())) {
             count++;
             premGrid.appendChild(createCard(key, item, false, true));
             
@@ -727,6 +743,7 @@
 
         Object.keys(allVideos).reverse().forEach(key => {
           const item = allVideos[key];
+          if (!item || typeof item !== 'object') return;
           const isPinned = pinnedVideos.includes(key);
           const titleMatch = item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -754,6 +771,7 @@
       
       keys.forEach(key => {
         const item = allVideos[key];
+        if (!item || typeof item !== 'object') return;
         const category = item.category || "Featured Videos";
         const titleMatch = item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -861,20 +879,17 @@
       return card;
     }
 
-    // ✅ FIX: ফ্রি ভিডিও — প্রতিবার ক্লিকে আগে এড দেখাবে, তারপর ভিডিও প্লে হবে
-    // ব্যানার থেকে (videoUrl, title) আকারে অথবা কার্ড থেকে (key, item) আকারে ডাকা হয়
+    // ফ্রি ভিডিও — প্রতিবার ক্লিকে আগে এড দেখাবে, তারপর ভিডিও প্লে হবে
     window.handleNormalVideoClick = (firstArg, secondArg, thirdArg) => {
       let key, item, videoUrl, title, specificAdUrl;
 
       if (secondArg && typeof secondArg === 'object') {
-        // কার্ড থেকে: handleNormalVideoClick(key, item)
         key = firstArg;
         item = secondArg;
         videoUrl = item.videoUrl;
         title = item.title || 'Untitled';
         specificAdUrl = item.adUrl;
       } else {
-        // ব্যানার থেকে: handleNormalVideoClick(videoUrl, title)
         videoUrl = firstArg;
         title = secondArg || 'Untitled';
         specificAdUrl = thirdArg;
@@ -884,25 +899,21 @@
 
       if (!videoUrl) { alert("ভিডিও লিংক পাওয়া যায়নি!"); return; }
 
-      // এড লিংক: ভিডিওর নিজের Adsterra Direct Link, না থাকলে গ্লোবাল Direct Link
       const adSource = (specificAdUrl && String(specificAdUrl).trim()) || (adUrlData ? adUrlData.trim() : "");
 
-      // কোনো এড লিংক না থাকলে সরাসরি প্লে
       if (!adSource) {
         openVideoPlayer(videoUrl, title);
         return;
       }
 
-      // ব্যানার থেকে সরাসরি প্লে (ব্যানারে এড গেট লাগবে না)
       if (!key) {
         openVideoPlayer(videoUrl, title);
         return;
       }
 
-      // এডমিন যতটি এড সেট করেছে (সেট না করলে ডিফল্ট ১টি)
       const requiredAds = (item.adLimit !== undefined && parseInt(item.adLimit) > 0) ? parseInt(item.adLimit) : 1;
 
-      // ✅ প্রতিবার ক্লিকে এড নতুন করে শুরু হবে — বের হয়ে আবার ক্লিক করলেও আবার এড আসবে
+      // প্রতিবার ক্লিকে এড নতুন করে শুরু হবে
       videoAdProgress[key] = 0;
       openLockModal(key, item, 0, requiredAds, false);
     };
@@ -912,7 +923,7 @@
       openVideoPlayer(videoUrl, title);
     };
 
-    // ✅ FIX: প্রিমিয়াম ভিডিও — লগইন ছাড়া ক্লিক করলে সুন্দর রেজিস্ট্রেশন মেসেজ বক্স আসবে
+    // প্রিমিয়াম ভিডিও — লগইন ছাড়া ক্লিক করলে রেজিস্ট্রেশন মেসেজ বক্স আসবে
     function handlePremiumVideoClick(key, item) {
       if (!currentUser) {
         showRegisterRequiredModal();
@@ -924,7 +935,7 @@
         return;
       }
 
-      // ✅ এডমিন প্যানেলে সেট করা এড সংখ্যা (৫টা / ১০টা — যা সেট করবেন)
+      // এডমিন প্যানেলে সেট করা এড সংখ্যা (৫টা / ১০টা — যা সেট করবেন)
       const requiredAds = item.adLimit !== undefined ? parseInt(item.adLimit) : 5;
       if (!videoAdProgress[key]) videoAdProgress[key] = 0;
 
@@ -935,7 +946,7 @@
       }
     }
 
-    // ✅ NEW: রেজিস্ট্রেশন প্রয়োজন মেসেজ বক্স
+    // রেজিস্ট্রেশন প্রয়োজন মেসেজ বক্স
     window.showRegisterRequiredModal = () => {
       const modal = document.getElementById('lockModal');
       const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
@@ -958,7 +969,6 @@
       switchTab('profile', document.querySelectorAll('.nav-link')[3]);
     };
 
-    // ✅ FIX: টাইটেলে কোট থাকলেও যেন বাটন না ভাঙে — তাই pendingVideo ব্যবহার করা হয়েছে
     window.openLockModal = (key, item, currentCount, requiredAds, isPremium) => {
       pendingVideo = { key: key, item: item, requiredAds: requiredAds, isPremium: isPremium !== undefined ? isPremium : true };
       const modal = document.getElementById('lockModal');
@@ -992,7 +1002,6 @@
       }
     };
 
-    // ✅ FIX: এড দেখানো — ভিডিওর নিজের এড লিংক থাকলে সেটাই খুলবে, নাহলে গ্লোবাল Direct Link
     window.watchAdForVideo = () => {
       if (!pendingVideo) return;
       const item = pendingVideo.item;
