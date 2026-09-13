@@ -1,285 +1,1398 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ফ্রেন্ড গ্রুপ</title>
-    <style>
-        :root {
-            --primary-color: #4a90e2; --secondary-color: #f5a623; --danger-color: #e74c3c;
-            --background-color: #f0f4f8; --card-bg-color: #ffffff; --text-color: #333;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google Search SEO Meta Tags -->
+  <title>Secret Video - Free HD Trending Videos</title>
+  <meta name="description" content="Watch and stream the latest secret trending videos, viral clips, and HD entertainment on Secret Video Portal for free.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://i.ibb.co/zWvmyGPT/1000109018.png">
+  <link rel="apple-touch-icon" href="https://i.ibb.co/zWvmyGPT/1000109018.png">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Secret Video">
+  <meta property="og:title" content="Secret Video - Watch & Download Free HD Trending Videos">
+  <meta property="og:description" content="Watch and stream the latest secret trending videos, viral clips, and HD entertainment on Secret Video Portal for free.">
+  <meta property="og:image" content="https://i.ibb.co/zWvmyGPT/1000109018.png">
+  
+  <meta name="google-site-verification" content="zuwpdVo1tFbmHfLy9DUCvqP6mQVRmZUrPxFAonnnTyU" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Content Copy & Selection Protection */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', Roboto, sans-serif; 
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    
+    input, textarea {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+
+    body { background-color: #f4f5f8; color: #1a1a1a; padding-bottom: 110px; overflow-x: hidden; }
+
+    /* Preloader CSS */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      z-index: 999999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .preloader-logo {
+      max-width: 160px;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    .preloader-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #e50914;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .preloader-title span {
+      color: #fff;
+      background: #e50914;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+
+    .preloader-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Header */
+    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eaedf1; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .logo { font-size: 17px; font-weight: 800; color: #e50914; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+    .logo span { color: #fff; background: #e50914; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+    .header-icons { display: flex; gap: 14px; font-size: 16px; color: #555; align-items: center; }
+    .header-icons i { cursor: pointer; }
+
+    /* Search Bar Layout */
+    .search-box {
+      display: none;
+      width: 100%;
+      padding: 8px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid #eaedf1;
+      position: sticky;
+      top: 48px;
+      z-index: 99;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+    }
+    .search-input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #f0f2f5;
+      border: 1px solid #e1e4e8;
+      border-radius: 20px;
+      padding: 4px 12px;
+    }
+    .search-input-wrapper i { color: #777; font-size: 13px; margin-right: 8px; }
+    .search-input-wrapper input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 12px;
+      color: #1a1a1a;
+    }
+
+    /* Top & Bottom Ad Box */
+    .ad-container { width: 100%; display: flex; justify-content: center; align-items: center; background: #eef1f6; min-height: 45px; overflow: hidden; }
+    .native-ad-container { grid-column: 1 / -1; width: 100%; margin: 10px 0; display: flex; justify-content: center; align-items: center; background: #fff; padding: 8px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+    /* Dynamic Banner Slider */
+    .hero-slider-wrapper { 
+      overflow-x: auto; 
+      display: flex; 
+      scroll-snap-type: x mandatory; 
+      scrollbar-width: none; 
+      padding: 10px 12px; 
+      gap: 10px; 
+      scroll-behavior: smooth;
+    }
+    .hero-slider-wrapper::-webkit-scrollbar { display: none; }
+    .hero-banner { 
+      flex: 0 0 100%; 
+      height: 160px; 
+      scroll-snap-align: start; 
+      position: relative; 
+      border-radius: 12px; 
+      overflow: hidden; 
+      display: flex; 
+      align-items: flex-end; 
+      padding: 12px; 
+      background-size: cover; 
+      background-position: center; 
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .hero-banner::before { content:''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); }
+    .hero-content { position: relative; z-index: 2; color: #fff; }
+    .hero-badge { background: #e50914; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-bottom: 4px; display: inline-block; }
+    .hero-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .hero-desc { font-size: 11px; color: #ddd; margin-bottom: 8px; }
+    .btn-play { background: #e50914; color: #fff; border: none; padding: 5px 12px; border-radius: 15px; font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* Category Filter Bar */
+    .cat-bar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 12px; scrollbar-width: none; background: #ffffff; border-bottom: 1px solid #eaedf1; }
+    .cat-bar::-webkit-scrollbar { display: none; }
+    .cat-btn { background: #f0f2f5; color: #555; border: 1px solid #e1e4e8; padding: 6px 14px; border-radius: 20px; font-size: 11px; white-space: nowrap; cursor: pointer; font-weight: 600; }
+    .cat-btn.active { background: #e50914; color: #fff; border-color: #e50914; font-weight: bold; }
+
+    /* Category Section Block */
+    .category-section { margin-bottom: 15px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 12px 8px 12px; }
+    .section-title { font-size: 14px; font-weight: 700; color: #1a1a1a; border-left: 3px solid #e50914; padding-left: 6px; }
+
+    /* Small Video Cards Grid */
+    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px; }
+    
+    /* Poster Card Frame */
+    .poster-card { 
+      background: #1e1e1e; 
+      border-radius: 8px; 
+      overflow: hidden; 
+      cursor: pointer; 
+      position: relative; 
+      height: 135px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
+    }
+    .poster-card:active { transform: scale(0.96); }
+    .poster-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); z-index: 1; }
+    
+    .play-overlay { 
+      position: absolute; 
+      top: 40%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      width: 28px; 
+      height: 28px; 
+      background: rgba(229, 9, 20, 0.9); 
+      border-radius: 50%; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      color: #fff; 
+      font-size: 11px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5); 
+      z-index: 2;
+    }
+    
+    .premium-lock-badge { position: absolute; top: 6px; left: 6px; background: rgba(255, 193, 7, 0.95); color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; z-index: 10; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+    .pin-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+    .pin-btn.pinned { background: #e50914; color: #fff; }
+
+    .poster-title-overlay { 
+      position: absolute; 
+      bottom: 6px; 
+      left: 0; 
+      width: 100%; 
+      text-align: center;
+      padding: 0 4px;
+      z-index: 3;
+    }
+    
+    .poster-title-text {
+      color: #ffffff; 
+      font-size: 11px; 
+      font-weight: 600; 
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      display: block;
+      width: 100%;
+    }
+
+    /* Fixed Bottom Navigation */
+    .bottom-nav { 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 60px;
+      background: #ffffff; 
+      display: flex; 
+      justify-content: space-around; 
+      align-items: center; 
+      border-top: 1px solid #eaedf1; 
+      z-index: 1000; 
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06); 
+    }
+    .nav-link { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      color: #777; 
+      text-decoration: none; 
+      font-size: 11px; 
+      font-weight: 500;
+      cursor: pointer; 
+      width: 25%;
+      gap: 3px;
+    }
+    .nav-link i { font-size: 18px; display: block; }
+    .nav-link img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+    .nav-link.active { color: #e50914; font-weight: bold; }
+
+    /* Bottom Ad Box */
+    #bottomAdBox {
+      position: fixed; 
+      bottom: 60px; 
+      left: 0; 
+      width: 100%;
+      z-index: 999;
+    }
+
+    /* Modals & Player Styling (YouTube Responsive Style) */
+    .player-modal { 
+      display: none; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0,0,0,0.95); 
+      z-index: 2000; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      backdrop-filter: blur(5px); 
+    }
+
+    /* YouTube Like Video Box Wrapper */
+    .video-box-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      background: #000;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    }
+
+    .video-box-wrapper video, 
+    .video-box-wrapper iframe { 
+      width: 100%; 
+      height: 100%; 
+      border: none; 
+      object-fit: contain;
+    }
+
+    .close-modal { 
+      position: absolute; 
+      top: 15px; 
+      right: 20px; 
+      color: #fff; 
+      font-size: 28px; 
+      cursor: pointer; 
+      z-index: 2001; 
+      background: rgba(0,0,0,0.5);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-title { 
+      margin-top: 14px; 
+      font-size: 15px; 
+      font-weight: 600; 
+      padding: 0 15px; 
+      text-align: center; 
+      color: #fff; 
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .lock-box { background: #ffffff; border-radius: 12px; width: 85%; max-width: 320px; padding: 20px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+    .lock-box i { font-size: 40px; color: #e50914; margin-bottom: 12px; }
+    .lock-box h3 { font-size: 16px; color: #111; margin-bottom: 8px; }
+    .lock-box p { font-size: 12px; color: #666; margin-bottom: 16px; line-height: 1.4; }
+    .lock-btn { background: #e50914; color: #fff; border: none; padding: 9px 18px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; }
+
+    /* Custom Rewarded Timer Box Overlay */
+    .timer-overlay-card {
+      background: #1e1e1e; color: #fff; padding: 25px 20px; border-radius: 12px; text-align: center; width: 88%; max-width: 330px; border: 1px solid #333; box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    }
+    .timer-badge { font-size: 15px; color: #ffc107; font-weight: bold; margin: 15px 0; background: #2a2a2a; padding: 12px; border-radius: 8px; border: 1px dashed #ffc107; }
+    .ad-x-close-btn { background: #2ed573; color: #000; font-weight: bold; padding: 12px 18px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 10px; }
+
+    .profile-card { background: #ffffff; border-radius: 12px; margin: 15px; padding: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .profile-img-container { position: relative; width: 90px; height: 90px; margin: 0 auto 12px auto; }
+    .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #e50914; }
+    .upload-btn { position: absolute; bottom: 0; right: 0; background: #e50914; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; }
+    .profile-name { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+    .profile-email { font-size: 12px; color: #666; margin-bottom: 15px; }
+    .auth-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-google { background: #ffffff; color: #333; border: 1px solid #ccc; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .google-icon { width: 18px; height: 18px; }
+    .btn-danger { background: #e50914; color: #fff; }
+    .btn-primary { background: #007bff; color: #fff; }
+
+    .auth-form { text-align: left; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px; }
+    .form-group input { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
+    .auth-toggle { font-size: 12px; color: #007bff; cursor: pointer; text-align: center; margin-top: 12px; }
+  </style>
+
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function (e) {
+      if (e.keyCode == 123) { return false; }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
+      if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+      if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
+    };
+
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var preloader = document.getElementById('preloader');
+        if (preloader) {
+          preloader.classList.add('preloader-hidden');
         }
-        body { font-family: 'Hind Siliguri', Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 0 auto; background-color: var(--card-bg-color); padding: 20px; min-height: 100vh; box-sizing: border-box; }
-        .page { display: none; } .page.active { display: block; }
-        h1, h2 { text-align: center; color: var(--primary-color); }
-        #auth-page { padding-top: 50px; text-align: center; }
-        #auth-page h1 span { font-size: 36px; }
-        #google-login-btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-size: 18px; font-weight: bold; color: #555; background-color: #fff; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; margin-top: 30px; }
-        #google-login-btn img { width: 24px; height: 24px; margin-right: 12px; }
-        .friend-card { background-color: #fdfdfd; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; }
-        .friend-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
-        #logout-btn { display: block; margin: 30px auto; padding: 10px 20px; background-color: var(--danger-color); color: white; border: none; border-radius: 8px; cursor: pointer; }
+      }, 2500); 
+    });
+  </script>
 
-        #chat-page .container { padding-bottom: 140px; }
-        #chat-messages { padding-bottom: 20px; }
-        .message { display: flex; align-items: flex-end; margin-bottom: 12px; max-width: 90%; }
-        .chat-avatar { width: 35px; height: 35px; border-radius: 50%; margin: 0 8px; }
-        .message-content { padding: 10px 14px; border-radius: 18px; line-height: 1.4; position: relative; }
-        .message .sender { font-weight: bold; font-size: 13px; margin-bottom: 4px; color: var(--primary-color); }
-        .message.sent { align-self: flex-end; flex-direction: row-reverse; }
-        .message.sent .message-content { background-color: #dcf8c6; }
-        .message.received { align-self: flex-start; }
-        .message.received .message-content { background-color: #f1f1f1; }
-        .chat-image { max-width: 200px; max-height: 200px; border-radius: 15px; cursor: pointer; object-fit: cover; margin-top: 5px; }
-        .delete-icon { cursor: pointer; font-size: 20px; color: #e74c3c; position: absolute; top: -8px; right: -8px; background: white; border-radius: 50%; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        .message.sent:hover .delete-icon { display: flex; }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { 
+      getAuth, 
+      GoogleAuthProvider, 
+      signInWithPopup, 
+      signOut, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      sendEmailVerification, 
+      updateProfile,
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        #chat-form { position: fixed; bottom: 55px; left: 0; right: 0; max-width: 600px; margin: 0 auto; background-color: #fff; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px; box-sizing: border-box; z-index: 100; }
-        #image-upload-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--primary-color); padding: 5px; }
-        #chat-input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; }
-        #chat-form button[type="submit"] { padding: 10px 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 20px; cursor: pointer; }
-        
-        #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; display: none; justify-content: space-around; background-color: #fff; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); padding: 10px 0; }
-        .nav-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #aaa; }
-        .nav-btn.active { color: var(--primary-color); }
-        .message-box { padding: 20px; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .message-text { font-size: 20px; color: #333; font-weight: normal; line-height: 1.7; margin-bottom: 25px; max-width: 95%; }
-        .message-button { display: none; padding: 12px 25px; background-color: var(--secondary-color); color: white; border: none; border-radius: 8px; font-size: 18px; margin: 10px auto; cursor: pointer; }
-        #final-message { font-size: 52px; font-weight: bold; color: #d81b60; animation: pulse 1.5s infinite; text-align: center; line-height: 1.3; }
-        #final-message .heart { font-size: 90px; display: block; margin-top: 20px; }
-        @keyframes pulse { 0%{transform: scale(1);} 50%{transform: scale(1.1);} 100%{transform: scale(1);} }
-    </style>
-</head>
-<body>
+    import { firebaseConfig, IMGBB_API_KEY } from './config.js';
 
-    <div id="auth-page" class="page active">
-        <div class="container">
-             <h1><span>🤝</span> ফ্রেন্ড গ্রুপে স্বাগতম <span>🤝</span></h1>
-            <h2>গ্রুপে যোগ দিতে লগইন করুন</h2>
-            <button id="google-login-btn"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon">গুগল দিয়ে লগইন করুন</button>
-        </div>
-    </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
 
-    <div id="app-container">
-        <div id="home-page" class="page">
-            <div class="container">
-                <h1 id="welcome-title"></h1>
-                <div id="friend-list"></div>
-                <button id="logout-btn">লগ-আউট</button>
-            </div>
-        </div>
-        <div id="chat-page" class="page">
-            <div class="container">
-                <h1>💬 গ্রুপ চ্যাট 💬</h1>
-                <div id="chat-messages"></div>
-            </div>
-            <form id="chat-form">
-                <button type="button" id="image-upload-btn">📎</button>
-                <input type="file" id="image-input" accept="image/*" style="display: none;">
-                <input type="text" id="chat-input" placeholder="মেসেজ লিখুন..." autocomplete="off">
-                <button type="submit">পাঠান</button>
-            </form>
-        </div>
-        <div id="messages-page" class="page">
-             <div class="container">
-                <h1>💌 বিশেষ বার্তা 💌</h1>
-                <div id="message-display" class="message-box"></div>
-            </div>
-        </div>
-        <div id="bottom-nav">
-            <button class="nav-btn" data-page="home-page">🏠</button>
-            <button class="nav-btn" data-page="chat-page">💬</button>
-            <button class="nav-btn" data-page="messages-page">💌</button>
-        </div>
-    </div>
+    let currentUser = null;
+    let videoAdProgress = {};
+    let adTimerInterval = null;
+    let userAccessStatus = 'none';
+    let pendingVideo = null;
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      updateProfileUI();
+      if (user) {
+        checkUserAccessStatus();
+      } else {
+        userAccessStatus = 'none';
+        renderVideos();
+      }
+    });
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDEmxPZisclLYns5MKnj-ar9fSOjZ_Glho",
-            authDomain: "my-incame-chait.firebaseapp.com",
-            databaseURL: "https://my-incame-chait-default-rtdb.firebaseio.com",
-            projectId: "my-incame-chait",
-            storageBucket: "my-incame-chait.appspot.com",
-            messagingSenderId: "610034577258",
-            appId: "1:610034577258:web:cd870a6960a697258ebf13"
-        };
-        
-        const IMGBB_API_KEY = "d617dab9d2117228e38549791d42104a";
+    function checkUserAccessStatus() {
+      if (!currentUser) return;
+      onValue(ref(db, `accessRequests/${currentUser.uid}`), (snapshot) => {
+        if (snapshot.exists()) {
+          userAccessStatus = snapshot.val().status || 'pending';
+        } else {
+          userAccessStatus = 'none';
+        }
+        renderVideos();
+      });
+    }
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
+    let adUrlData = "";
+    let adInterval = 0;
+    let nativeAdCodeData = "";
+    let allVideos = {};
+    let premiumVideos = {};
+    let categoriesList = [];
+    let selectedCat = "All";
+    let searchQuery = "";
+    let autoSlideTimer = null;
+    let currentTab = "home"; 
+    let pinnedVideos = JSON.parse(localStorage.getItem('pinnedVideos') || '[]');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const authPage = document.getElementById('auth-page');
-            const appContainer = document.getElementById('app-container');
-            const bottomNav = document.getElementById('bottom-nav');
-            const googleLoginBtn = document.getElementById('google-login-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const pages = document.querySelectorAll('#app-container .page');
-            const navBtns = document.querySelectorAll('.nav-btn');
-            const imageUploadBtn = document.getElementById('image-upload-btn');
-            const imageInput = document.getElementById('image-input');
-            const chatMessagesDiv = document.getElementById('chat-messages');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
-            
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    database.ref('users/' + user.uid).set({ name: user.displayName, photoURL: user.photoURL });
-                    document.getElementById('welcome-title').innerText = `👋 ${user.displayName}`;
-                    authPage.style.display = 'none';
-                    appContainer.style.display = 'block';
-                    bottomNav.style.display = 'flex';
-                    showPage('home-page');
-                    listenForFriends();
-                    listenForMessages();
-                } else {
-                    authPage.style.display = 'block';
-                    appContainer.style.display = 'none';
-                    bottomNav.style.display = 'none';
-                }
-            });
+    // Read Admin Ad Configuration
+    onValue(ref(db, 'settings/adConfig'), (snapshot) => {
+      const config = snapshot.val();
+      if (config) {
+        adUrlData = config.adUrl || "";
+        adInterval = config.adInterval !== undefined ? parseInt(config.adInterval) : 0;
+        nativeAdCodeData = config.nativeAdCode || "";
 
-            googleLoginBtn.addEventListener('click', () => {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                auth.signInWithPopup(provider).catch(error => console.error("Google Sign-In Error:", error));
-            });
+        if (config.topBannerCode) renderAnyAd('topAdBox', config.topBannerCode);
+        if (config.bottomBannerCode) renderAnyAd('bottomAdBox', config.bottomBannerCode);
+        if (config.popupAdCode) injectAdsterraScript(config.popupAdCode, 'popunderAdContainer');
+        if (config.socialBarAdCode) injectAdsterraScript(config.socialBarAdCode, 'socialBarAdContainer');
+      }
+    });
 
-            logoutBtn.addEventListener('click', () => auth.signOut());
+    // Universal Screen Click Handler (Admin Set Interval Popunder Trigger)
+    document.addEventListener('click', function(e) {
+      if (!adUrlData) return;
+      
+      // Ignore clicks on close buttons or inputs to avoid frustrating the user
+      if (e.target.closest('.close-modal, input, textarea, select, button, a')) return;
 
-            const showPage = (pageId) => {
-                pages.forEach(p => p.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-                navBtns.forEach(b => b.classList.remove('active'));
-                document.querySelector(`.nav-btn[data-page="${pageId}"]`)?.classList.add('active');
-                if (pageId === 'messages-page') startMessageSequence();
-            };
-            navBtns.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
+      const lastClickAdTime = localStorage.getItem('lastClickAdTime') || 0;
+      const now = Date.now();
 
-            imageUploadBtn.addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
+      // ✅ FIX: এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল এখন সত্যিই কাজ করবে (0 = প্রতি ক্লিকে)
+      const intervalMs = adInterval > 0 ? adInterval * 60 * 1000 : 0;
+      if (now - lastClickAdTime >= intervalMs) {
+        let targetUrl = adUrlData.trim();
+        if (targetUrl.includes("src=")) {
+          const match = targetUrl.match(/src=["']([^"']+)["']/);
+          if (match && match[1]) targetUrl = match[1];
+        }
+        if (targetUrl) {
+          window.open(targetUrl, '_blank');
+          localStorage.setItem('lastClickAdTime', now);
+        }
+      }
+    }, true);
 
-                const formData = new FormData();
-                formData.append('key', IMGBB_API_KEY);
-                formData.append('image', file);
-                
-                const tempId = 'temp_' + Date.now();
-                appendMessage({ uid: auth.currentUser.uid, sender: auth.currentUser.displayName, photoURL: auth.currentUser.photoURL, text: "ছবি আপলোড হচ্ছে...", tempId: tempId });
+    function injectAdsterraScript(scriptCode, containerId) {
+      if (!scriptCode) return;
+      let container = document.getElementById(containerId);
+      if (!container) {
+        container = document.createElement('div');
+        container.id = containerId;
+        document.body.appendChild(container);
+      }
+      container.innerHTML = "";
+      
+      const range = document.createRange();
+      range.selectNode(container);
+      const documentFragment = range.createContextualFragment(scriptCode);
+      container.appendChild(documentFragment);
+    }
 
-                fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(result => {
-                    document.getElementById(tempId)?.remove();
-                    if (result.success) {
-                        sendMessage(null, result.data.url);
-                    } else {
-                        alert("ছবি আপলোড করা যায়নি। কারণ: " + result.error.message);
-                    }
-                })
-                .catch(error => {
-                    document.getElementById(tempId)?.remove();
-                    alert("ছবি আপলোড করার সময় একটি নেটওয়ার্ক সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
-                    console.error('ImgBB Upload Error:', error);
-                });
+    function renderAnyAd(containerId, rawCode) {
+      const container = document.getElementById(containerId);
+      if (!container || !rawCode) return;
+      container.innerHTML = "";
 
-                imageInput.value = '';
-            });
+      if (rawCode.startsWith("http://") || rawCode.startsWith("https://")) {
+        const a = document.createElement('a');
+        a.href = rawCode;
+        a.target = "_blank";
+        a.innerHTML = "<span style='color:#e50914; font-size:11px; font-weight:bold;'>Click Here To Watch Ad</span>";
+        container.appendChild(a);
+      } else {
+        const iframe = document.createElement('iframe');
+        iframe.style.border = 'none';
+        iframe.style.width = '100%';
+        iframe.style.height = '60px';
+        iframe.style.overflow = 'hidden';
+        container.appendChild(iframe);
 
-            chatForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const text = chatInput.value.trim();
-                if (text) { sendMessage(text, null); chatInput.value = ''; }
-            });
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(`<body style="margin:0; padding:0; display:flex; justify-content:center; align-items:center; background:transparent;">${rawCode}</body>`);
+        doc.close();
+      }
+    }
 
-            function sendMessage(text, imageUrl) {
-                if ((!text && !imageUrl) || !auth.currentUser) return;
-                database.ref('messages').push({
-                    uid: auth.currentUser.uid, sender: auth.currentUser.displayName, photoURL: auth.currentUser.photoURL,
-                    text: text || '', imageUrl: imageUrl || '', timestamp: firebase.database.ServerValue.TIMESTAMP
-                });
-            }
-
-            function listenForMessages() {
-                const messagesRef = database.ref('messages').limitToLast(100);
-                chatMessagesDiv.innerHTML = '';
-                messagesRef.on('child_added', snapshot => appendMessage(snapshot.val(), snapshot.key));
-                messagesRef.on('child_removed', snapshot => {
-                    const elementToRemove = document.getElementById(snapshot.key);
-                    if (elementToRemove) elementToRemove.remove();
-                });
-            }
-
-            function appendMessage(msg, msgKey) {
-                 if(!msg || !auth.currentUser) return;
-                 const msgDiv = document.createElement('div');
-                 msgDiv.id = msg.tempId || msgKey;
-                 msgDiv.className = `message ${msg.uid === auth.currentUser.uid ? 'sent' : 'received'}`;
-                 const photo = msg.photoURL || `https://api.multiavatar.com/${msg.sender}.png`;
-                 let contentHTML = `<div class="sender">${msg.sender}</div>`;
-                 if (msg.imageUrl) contentHTML += `<img src="${msg.imageUrl}" class="chat-image" alt="ছবি">`;
-                 if (msg.text) contentHTML += `<div>${msg.text}</div>`;
-                 const deleteIconHTML = msg.uid === auth.currentUser.uid && !msg.tempId ? `<span class="delete-icon" data-key="${msgKey}">❌</span>` : '';
-                 msgDiv.innerHTML = `<img src="${photo}" class="chat-avatar"><div class="message-content">${contentHTML}${deleteIconHTML}</div>`;
-                 chatMessagesDiv.appendChild(msgDiv);
-                 chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
-            }
-
-            chatMessagesDiv.addEventListener('click', (e) => {
-                if (e.target.classList.contains('delete-icon')) {
-                    const msgKey = e.target.dataset.key;
-                    if (confirm("আপনি কি সত্যিই এই মেসেজটি মুছে ফেলতে চান?")) {
-                        database.ref('messages/' + msgKey).remove();
-                    }
-                }
-            });
-            
-            const friendList = document.getElementById('friend-list');
-            function listenForFriends() {
-                 database.ref('users').on('value', snapshot => {
-                    friendList.innerHTML = '';
-                    const users = snapshot.val();
-                    if(users) {
-                        Object.values(users).forEach(user => {
-                            const card = document.createElement('div');
-                            card.className = 'friend-card';
-                            const photo = user.photoURL || `https://api.multiavatar.com/${user.name}.png`;
-                            card.innerHTML = `<img src="${photo}" alt="ছবি"><h3>${user.name}</h3>`;
-                            friendList.appendChild(card);
-                        });
-                    }
-                });
-            }
-
-            const messages = [ "বন্ধু, আমাদের এই গ্রুপে তোমাকে স্বাগত জানাতে পেরে আমরা সবাই অনেক আনন্দিত! 🎉 এটা শুধু একটা গ্রুপ নয়, এটা আমাদের একটা পরিবার। এখানে আমরা সবাই মিলে হাসব, গল্প করব আর একে অপরের পাশে থাকব, ঠিক যেমনটা সত্যিকারের বন্ধুরা থাকে। 🥳", "বন্ধুত্ব হলো এমন একটি সম্পর্ক যা রক্ত দিয়ে নয়, মন দিয়ে তৈরি হয়। ❤️ তোমার মতো একজন বন্ধু পাওয়া জীবনের সেরা উপহারগুলোর মধ্যে একটি। ধন্যবাদ আমার জীবনে আসার জন্য এবং এটিকে আরও সুন্দর করে তোলার জন্য। 🎁", "মনে রেখো, জীবনের পথে চলতে গিয়ে যদি কখনো নিজেকে একা মনে হয়, তাহলে শুধু একবার আমাদের কথা ভেবো। 🤝 আমরা বন্ধুরা সবসময় তোমার পাশে আছি, যেকোনো পরিস্থিতিতে, যেকোনো সময়ে। তোমার মুখের এক চিলতে হাসির জন্য আমরা সবকিছু করতে পারি। 🤗", "আমাদের একসাথে কাটানো সময়গুলো, সেইসব মজার স্মৃতি, আর পাগলামি ভরা দিনগুলোর কথা ভাবলে এখনো হাসি পায়। 😂 চলো, আমরা ভবিষ্যতেও এরকম আরও অনেক সুন্দর মুহূর্ত তৈরি করি যা সারাজীবন আমাদের মনে থাকবে। 📸", "একজন ভালো বন্ধু হলো আয়নার মতো, যে তোমার ভালো দিকগুলো দেখায়; আর ছায়ার মতো, যে তোমার কঠিন সময়েও পাশে থাকে। 🌟 আমি ভাগ্যবান যে তোমার মতো একজন বন্ধু পেয়েছি যে আমার শক্তি এবং দুর্বলতা দুটোই জানে, কিন্তু কখনো বিচার করে না।", "কিছু সম্পর্ক আমাদের জীবনে আশীর্বাদ হয়ে আসে। আমাদের বন্ধুত্ব ঠিক তেমনই একটি আশীর্বাদ। 🙏 এই সম্পর্কটা যত্ন করে বাঁচিয়ে রাখার দায়িত্ব আমাদের সবার। চলো, কথা দিই, যত ঝড়ই আসুক, আমরা একে অপরের হাত কখনো ছাড়ব না।", "জীবনের সবচেয়ে বড় পাওয়া হলো এমন কিছু বন্ধু থাকা, যাদের কাছে মন খুলে সব কথা বলা যায়, কোনো কিছু না ভেবেই। 😌 তুমি আমার সেইরকম একজন বন্ধু, যার কাছে আমি আমার সব গোপন কথা, সব স্বপ্ন, সব ভয়ের কথা বলতে পারি। তোমার কাছে আমি চিরকৃতজ্ঞ।", "আমাদের এই বন্ধুত্বের বাঁধন যেন সারাজীবন অটুট থাকে। 💪 সময়ের সাথে সাথে হয়তো অনেক কিছু বদলে যাবে, আমাদের ব্যস্ততা বাড়বে, দূরত্বও তৈরি হতে পারে, কিন্তু আমাদের এই বন্ধুত্ব যেন কখনো না বদলায়। এই প্রার্থনা করি।", "তুমি শুধু আমার বন্ধু নও, তুমি আমার অনুপ্রেরণা। তোমার ইতিবাচক মনোভাব, তোমার কাজের প্রতি একাগ্রতা আর তোমার সুন্দর মনটা আমাকে সবসময় মুগ্ধ করে। 😊 তোমার কাছ থেকে আমার অনেক কিছু শেখার আছে। পাশে থেকো এভাবেই, সারাজীবন।", "শেষ পর্যন্ত, বন্ধুত্ব কোনো বড় ব্যাপার নয়, এটা লক্ষ লক্ষ ছোট ছোট ভালো লাগার সমষ্টি। ✨ আমাদের একসাথে চা খাওয়া, অকারণে হাসা, একে অপরের বিপদে ছুটে যাওয়া—এই ছোট ছোট মুহূর্তগুলোই আমাদের বন্ধুত্বকে অসাধারণ করে তুলেছে। চলো, এই বন্ধুত্বকে প্রতিদিন উদযাপন করি! 🚀" ];
-            const messageDisplay = document.getElementById('message-display');
-            let currentMessageIndex = 0;
-            function showNextMessage() {
-                messageDisplay.innerHTML = '';
-                if (currentMessageIndex < messages.length) {
-                    const messageText = document.createElement('p');
-                    messageText.className = 'message-text';
-                    messageText.innerText = messages[currentMessageIndex];
-                    const nextButton = document.createElement('button');
-                    nextButton.className = 'message-button';
-                    nextButton.style.display = 'inline-block';
-                    nextButton.innerText = "পরবর্তী বার্তা দেখো";
-                    nextButton.onclick = () => { currentMessageIndex++; showNextMessage(); };
-                    messageDisplay.appendChild(messageText);
-                    messageDisplay.appendChild(nextButton);
-                } else {
-                    messageDisplay.innerHTML = `<div id="final-message">FRIEND<br>GROUP<br>LIFE<span class="heart">❤️</span></div>`;
-                }
-            }
-            function startMessageSequence() { currentMessageIndex = 0; showNextMessage(); }
+    // Read Admin Categories
+    onValue(ref(db, 'categories'), (snapshot) => {
+      categoriesList = [];
+      const data = snapshot.val();
+      if (data) {
+        Object.keys(data).forEach(key => {
+          categoriesList.push(data[key].name);
         });
-    </script>
+      }
+      renderCategoryBar();
+    });
+
+    // Read Admin Normal Videos
+    onValue(ref(db, 'videos'), (snapshot) => {
+      allVideos = snapshot.val() || {};
+      renderCategoryBar();
+      renderVideos();
+    });
+
+    // Read Admin Premium Videos
+    onValue(ref(db, 'premiumVideos'), (snapshot) => {
+      premiumVideos = snapshot.val() || {};
+      if (currentTab === 'trending') renderVideos();
+    });
+
+    function renderCategoryBar() {
+      const catBar = document.getElementById('catBar');
+      if (!catBar) return;
+      catBar.innerHTML = "";
+
+      const allBtn = document.createElement('button');
+      allBtn.className = `cat-btn ${selectedCat === 'All' ? 'active' : ''}`;
+      allBtn.innerText = "All";
+      allBtn.onclick = () => filterCat('All', allBtn);
+      catBar.appendChild(allBtn);
+
+      categoriesList.forEach(catName => {
+        const btn = document.createElement('button');
+        btn.className = `cat-btn ${selectedCat === catName ? 'active' : ''}`;
+        btn.innerText = catName;
+        btn.onclick = () => filterCat(catName, btn);
+        catBar.appendChild(btn);
+      });
+    }
+
+    window.filterCat = (catName, btnElement) => {
+      selectedCat = catName;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+      renderVideos();
+    };
+
+    // Read Admin Hero Banners
+    onValue(ref(db, 'heroBanners'), (snapshot) => {
+      const heroSlider = document.getElementById('heroSlider');
+      heroSlider.innerHTML = "";
+      const data = snapshot.val();
+      if (data) {
+        const banners = Object.values(data);
+        banners.forEach(b => {
+          const div = document.createElement('div');
+          div.className = 'hero-banner';
+          div.style.backgroundImage = `url('${b.imgUrl}')`;
+          
+          div.onclick = () => {
+            if (b.videoUrl) {
+              handleNormalVideoClick(b.videoUrl, b.title || 'Banner Video');
+            } else if (b.linkUrl) {
+              window.open(b.linkUrl, '_blank');
+            }
+          };
+
+          div.innerHTML = `
+            <div class="hero-content">
+              <span class="hero-badge">FEATURED</span>
+              <h2 class="hero-title">${b.title || ''}</h2>
+              <div class="hero-desc">${b.desc || ''}</div>
+              <button class="btn-play"><i class="fa-solid fa-play"></i> Watch Now</button>
+            </div>
+          `;
+          heroSlider.appendChild(div);
+        });
+
+        startAutoSlider(heroSlider, banners.length);
+      } else {
+        heroSlider.style.display = 'none';
+      }
+    });
+
+    function startAutoSlider(slider, total) {
+      if (autoSlideTimer) clearInterval(autoSlideTimer);
+      if (total <= 1) return;
+
+      let currentIndex = 0;
+      autoSlideTimer = setInterval(() => {
+        currentIndex = (currentIndex + 1) % total;
+        const bannerWidth = slider.clientWidth;
+        slider.scrollTo({
+          left: bannerWidth * currentIndex,
+          behavior: 'smooth'
+        });
+      }, 3500);
+    }
+
+    window.togglePin = (e, videoId) => {
+      e.stopPropagation();
+      const index = pinnedVideos.indexOf(videoId);
+      if (index > -1) {
+        pinnedVideos.splice(index, 1);
+      } else {
+        pinnedVideos.push(videoId);
+      }
+      localStorage.setItem('pinnedVideos', JSON.stringify(pinnedVideos));
+      renderVideos();
+    };
+
+    function renderVideos() {
+      const mainContainer = document.getElementById('mainContentContainer');
+      mainContainer.innerHTML = "";
+
+      if (currentTab === "profile") {
+        renderProfileSection(mainContainer);
+        return;
+      }
+
+      if (currentTab === "trending") {
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'section-header';
+        headerDiv.innerHTML = `<span class="section-title">Premium Content</span>`;
+        mainContainer.appendChild(headerDiv);
+
+        const premGrid = document.createElement('div');
+        premGrid.className = 'mini-grid';
+        const keys = Object.keys(premiumVideos).reverse();
+        let count = 0;
+
+        keys.forEach((key, index) => {
+          const item = premiumVideos[key];
+          if (item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+            count++;
+            premGrid.appendChild(createCard(key, item, false, true));
+            
+            if (nativeAdCodeData && (index + 1) % 6 === 0) {
+              const nativeBox = document.createElement('div');
+              nativeBox.className = 'native-ad-container';
+              premGrid.appendChild(nativeBox);
+              renderAnyAdByElement(nativeBox, nativeAdCodeData);
+            }
+          }
+        });
+
+        if (count === 0) {
+          mainContainer.innerHTML += "<p style='color:#888; font-size:11px; text-align:center; padding:30px;'>কোনো প্রিমিয়াম ভিডিও উপলব্ধ নেই!</p>";
+        } else {
+          mainContainer.appendChild(premGrid);
+        }
+        return;
+      }
+
+      if (currentTab === "mylist") {
+        const myGrid = document.createElement('div');
+        myGrid.className = 'mini-grid';
+        let pinnedCount = 0;
+
+        Object.keys(allVideos).reverse().forEach(key => {
+          const item = allVideos[key];
+          const isPinned = pinnedVideos.includes(key);
+          const titleMatch = item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+          if (isPinned && titleMatch) {
+            pinnedCount++;
+            myGrid.appendChild(createCard(key, item, isPinned, false));
+          }
+        });
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'section-header';
+        headerDiv.innerHTML = `<span class="section-title">My Pinned Videos</span>`;
+        mainContainer.appendChild(headerDiv);
+
+        if (pinnedCount === 0) {
+          mainContainer.innerHTML += "<p style='color:#888; font-size:11px; text-align:center; padding:30px;'>আপনার কোনো পিন করা ভিডিও নেই!</p>";
+        } else {
+          mainContainer.appendChild(myGrid);
+        }
+        return;
+      }
+
+      const keys = Object.keys(allVideos).reverse();
+      const groupedVideos = {};
+      
+      keys.forEach(key => {
+        const item = allVideos[key];
+        const category = item.category || "Featured Videos";
+        const titleMatch = item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+        if (titleMatch) {
+          if (!groupedVideos[category]) {
+            groupedVideos[category] = [];
+          }
+          groupedVideos[category].push({ key, data: item });
+        }
+      });
+
+      let totalRendered = 0;
+      const categoriesToDisplay = selectedCat === "All" ? Object.keys(groupedVideos) : [selectedCat];
+
+      categoriesToDisplay.forEach(catName => {
+        const videoList = groupedVideos[catName];
+
+        if (videoList && videoList.length > 0) {
+          totalRendered += videoList.length;
+
+          const section = document.createElement('div');
+          section.className = 'category-section';
+
+          const secHeader = document.createElement('div');
+          secHeader.className = 'section-header';
+          secHeader.innerHTML = `<span class="section-title">${catName}</span>`;
+
+          const grid = document.createElement('div');
+          grid.className = 'mini-grid';
+
+          videoList.forEach((obj, idx) => {
+            const isPinned = pinnedVideos.includes(obj.key);
+            grid.appendChild(createCard(obj.key, obj.data, isPinned, false));
+
+            if (nativeAdCodeData && (idx + 1) % 6 === 0) {
+              const nativeBox = document.createElement('div');
+              nativeBox.className = 'native-ad-container';
+              grid.appendChild(nativeBox);
+              renderAnyAdByElement(nativeBox, nativeAdCodeData);
+            }
+          });
+
+          section.appendChild(secHeader);
+          section.appendChild(grid);
+          mainContainer.appendChild(section);
+        }
+      });
+
+      if (totalRendered === 0) {
+        mainContainer.innerHTML = "<p style='color:#888; font-size:11px; text-align:center; padding:20px;'>No videos found matching your request.</p>";
+      }
+    }
+
+    function renderAnyAdByElement(container, rawCode) {
+      if (!container || !rawCode) return;
+      container.innerHTML = "";
+      const iframe = document.createElement('iframe');
+      iframe.style.border = 'none';
+      iframe.style.width = '100%';
+      iframe.style.height = '80px';
+      iframe.style.overflow = 'hidden';
+      container.appendChild(iframe);
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`<body style="margin:0; padding:0; display:flex; justify-content:center; align-items:center; background:transparent;">${rawCode}</body>`);
+      doc.close();
+    }
+
+    function createCard(key, item, isPinned, isPremium) {
+      const card = document.createElement('div');
+      card.className = 'poster-card';
+      
+      const requiredAds = item.adLimit !== undefined ? parseInt(item.adLimit) : 5;
+      const currentCount = videoAdProgress[key] || 0;
+      
+      const isUnlocked = isPremium ? (userAccessStatus === 'approved' || currentCount >= requiredAds) : true;
+
+      const rawCover = item.imgUrl || item.posterUrl || item.thumbnailUrl || (item.episodes && item.episodes[0] ? item.episodes[0].thumbnailUrl : '');
+      const coverImage = (rawCover && rawCover.trim() !== '') ? rawCover : 'https://via.placeholder.com/300x450/1e1e1e/ffffff?text=Secret+Video';
+
+      card.onclick = () => {
+        if (isPremium) {
+          handlePremiumVideoClick(key, item);
+        } else {
+          handleNormalVideoClick(key, item);
+        }
+      };
+
+      card.innerHTML = `
+        ${isPremium ? `
+          <div class="premium-lock-badge">
+            <i class="fa-solid ${isUnlocked ? 'fa-unlock' : 'fa-lock'}"></i>
+          </div>
+        ` : ''}
+        ${!isPremium ? `<div class="pin-btn ${isPinned ? 'pinned' : ''}" onclick="togglePin(event, '${key}')" title="Pin Video"><i class="fa-solid fa-bookmark"></i></div>` : ''}
+        
+        <img src="${coverImage}" class="poster-img" alt="${item.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450/1e1e1e/ffffff?text=Poster';" oncontextmenu="return false;">
+        
+        <div class="play-overlay"><i class="fa-solid ${isPremium && !isUnlocked ? 'fa-lock' : 'fa-play'}"></i></div>
+        <div class="poster-title-overlay">
+          <span class="poster-title-text">${item.title}</span>
+        </div>
+      `;
+      return card;
+    }
+
+    // ✅ FIX: ফ্রি ভিডিও — প্রতিবার ক্লিকে আগে এড দেখাবে, তারপর ভিডিও প্লে হবে
+    // ব্যানার থেকে (videoUrl, title) আকারে অথবা কার্ড থেকে (key, item) আকারে ডাকা হয়
+    window.handleNormalVideoClick = (firstArg, secondArg, thirdArg) => {
+      let key, item, videoUrl, title, specificAdUrl;
+
+      if (secondArg && typeof secondArg === 'object') {
+        // কার্ড থেকে: handleNormalVideoClick(key, item)
+        key = firstArg;
+        item = secondArg;
+        videoUrl = item.videoUrl;
+        title = item.title || 'Untitled';
+        specificAdUrl = item.adUrl;
+      } else {
+        // ব্যানার থেকে: handleNormalVideoClick(videoUrl, title)
+        videoUrl = firstArg;
+        title = secondArg || 'Untitled';
+        specificAdUrl = thirdArg;
+        key = null;
+        item = { videoUrl: videoUrl, title: title, adUrl: specificAdUrl };
+      }
+
+      if (!videoUrl) { alert("ভিডিও লিংক পাওয়া যায়নি!"); return; }
+
+      // এড লিংক: ভিডিওর নিজের Adsterra Direct Link, না থাকলে গ্লোবাল Direct Link
+      const adSource = (specificAdUrl && String(specificAdUrl).trim()) || (adUrlData ? adUrlData.trim() : "");
+
+      // কোনো এড লিংক না থাকলে সরাসরি প্লে
+      if (!adSource) {
+        openVideoPlayer(videoUrl, title);
+        return;
+      }
+
+      // ব্যানার থেকে সরাসরি প্লে (ব্যানারে এড গেট লাগবে না)
+      if (!key) {
+        openVideoPlayer(videoUrl, title);
+        return;
+      }
+
+      // এডমিন যতটি এড সেট করেছে (সেট না করলে ডিফল্ট ১টি)
+      const requiredAds = (item.adLimit !== undefined && parseInt(item.adLimit) > 0) ? parseInt(item.adLimit) : 1;
+
+      // ✅ প্রতিবার ক্লিকে এড নতুন করে শুরু হবে — বের হয়ে আবার ক্লিক করলেও আবার এড আসবে
+      videoAdProgress[key] = 0;
+      openLockModal(key, item, 0, requiredAds, false);
+    };
+
+    window.startNormalVideoAfterAd = (videoUrl, title) => {
+      closeLockModal();
+      openVideoPlayer(videoUrl, title);
+    };
+
+    // ✅ FIX: প্রিমিয়াম ভিডিও — লগইন ছাড়া ক্লিক করলে সুন্দর রেজিস্ট্রেশন মেসেজ বক্স আসবে
+    function handlePremiumVideoClick(key, item) {
+      if (!currentUser) {
+        showRegisterRequiredModal();
+        return;
+      }
+
+      if (userAccessStatus === 'approved') {
+        openVideoPlayer(item.videoUrl, item.title);
+        return;
+      }
+
+      // ✅ এডমিন প্যানেলে সেট করা এড সংখ্যা (৫টা / ১০টা — যা সেট করবেন)
+      const requiredAds = item.adLimit !== undefined ? parseInt(item.adLimit) : 5;
+      if (!videoAdProgress[key]) videoAdProgress[key] = 0;
+
+      if (videoAdProgress[key] < requiredAds) {
+        openLockModal(key, item, videoAdProgress[key], requiredAds, true);
+      } else {
+        openVideoPlayer(item.videoUrl, item.title);
+      }
+    }
+
+    // ✅ NEW: রেজিস্ট্রেশন প্রয়োজন মেসেজ বক্স
+    window.showRegisterRequiredModal = () => {
+      const modal = document.getElementById('lockModal');
+      const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
+      
+      lockBox.className = "lock-box";
+      lockBox.innerHTML = `
+        <i class="fa-solid fa-user-lock" style="color:#e50914; font-size:45px;"></i>
+        <h3 style="font-size:17px;">রেজিস্ট্রেশন প্রয়োজন!</h3>
+        <p style="font-size:13px;">এটি একটি <b style="color:#e50914;">প্রিমিয়াম ভিডিও</b>।<br>
+        দেখতে হলে আপনাকে প্রথমে <b>ফ্রি রেজিস্ট্রেশন / লগইন</b> করতে হবে।</p>
+        <button class="lock-btn" style="font-size:14px; padding:12px;" onclick="goToProfileForLogin()">
+          এখনই রেজিস্ট্রেশন / লগইন করুন
+        </button>
+      `;
+      modal.style.display = 'flex';
+    };
+
+    window.goToProfileForLogin = () => {
+      closeLockModal();
+      switchTab('profile', document.querySelectorAll('.nav-link')[3]);
+    };
+
+    // ✅ FIX: টাইটেলে কোট থাকলেও যেন বাটন না ভাঙে — তাই pendingVideo ব্যবহার করা হয়েছে
+    window.openLockModal = (key, item, currentCount, requiredAds, isPremium) => {
+      pendingVideo = { key: key, item: item, requiredAds: requiredAds, isPremium: isPremium !== undefined ? isPremium : true };
+      const modal = document.getElementById('lockModal');
+      const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
+      
+      lockBox.className = "lock-box";
+      lockBox.innerHTML = `
+        <i class="fa-solid fa-lock" style="color:#e50914;"></i>
+        <h3>${pendingVideo.isPremium ? 'Locked Premium Content' : 'Watch Ad To Play'}</h3>
+        <p>${pendingVideo.isPremium 
+          ? `ভিডিওটি আনলক করতে আরও <b>${requiredAds - currentCount}</b> টি এড দেখুন অথবা এডমিন এক্সেস রিকোয়েস্ট পাঠান।`
+          : `ভিডিওটি দেখতে আগে <b>${requiredAds - currentCount}</b> টি এড দেখুন।`}</p>
+        <button class="lock-btn" style="margin-bottom:8px;" onclick="watchAdForVideo()">Watch Ad (${currentCount}/${requiredAds})</button>
+        ${pendingVideo.isPremium ? `<button class="lock-btn" style="background:#28a745;" onclick="sendAccessRequest()">Request Admin Access</button>` : ''}
+      `;
+      modal.style.display = 'flex';
+    };
+
+    window.sendAccessRequest = async () => {
+      if (!currentUser) return;
+      try {
+        await set(ref(db, `accessRequests/${currentUser.uid}`), {
+          userEmail: currentUser.email,
+          status: 'pending',
+          requestedAt: new Date().toLocaleString()
+        });
+        alert("আপনার এক্সেস রিকোয়েস্ট এডমিনের কাছে পাঠানো হয়েছে!");
+        closeLockModal();
+      } catch(e) {
+        alert("ত্রুটি: " + e.message);
+      }
+    };
+
+    // ✅ FIX: এড দেখানো — ভিডিওর নিজের এড লিংক থাকলে সেটাই খুলবে, নাহলে গ্লোবাল Direct Link
+    window.watchAdForVideo = () => {
+      if (!pendingVideo) return;
+      const item = pendingVideo.item;
+
+      let targetUrl = (item.adUrl && String(item.adUrl).trim()) || adUrlData.trim() || "https://google.com";
+      if (targetUrl.includes("src=")) {
+        const match = targetUrl.match(/src=["']([^"']+)["']/);
+        if (match && match[1]) targetUrl = match[1];
+      }
+      
+      window.open(targetUrl, '_blank');
+
+      const modal = document.getElementById('lockModal');
+      const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
+
+      lockBox.className = "timer-overlay-card";
+      lockBox.innerHTML = `
+        <i class="fa-solid fa-clock" style="font-size:35px; color:#ffc107; margin-bottom:8px;"></i>
+        <h3 style="font-size:15px; margin-bottom:5px;">বিজ্ঞাপনটি দেখা শেষ হওয়া পর্যন্ত অপেক্ষা করুন</h3>
+        <p style="font-size:11px; color:#aaa;">নতুন ট্যাবে অ্যাড প্লে হচ্ছে। 10 সেকেন্ড পর বন্ধ করুন বাটনটি দৃশ্যমান হবে।</p>
+        
+        <div id="adTimerBox" class="timer-badge">
+          অ্যাড দেখা শেষ হতে বাকি: <span id="adSecondsLeft">10</span> সেকেন্ড
+        </div>
+
+        <button id="adCloseXBtn" class="ad-x-close-btn" style="display:none;" onclick="finishAdCount()">
+          ✕ বন্ধ করুন ও পয়েন্ট নিন
+        </button>
+      `;
+
+      let timeLeft = 10;
+      if (adTimerInterval) clearInterval(adTimerInterval);
+
+      adTimerInterval = setInterval(() => {
+        timeLeft--;
+        const timerElem = document.getElementById('adSecondsLeft');
+        if (timerElem) timerElem.innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(adTimerInterval);
+          const timerBox = document.getElementById('adTimerBox');
+          const closeBtn = document.getElementById('adCloseXBtn');
+          if (timerBox) timerBox.style.display = 'none';
+          if (closeBtn) closeBtn.style.display = 'block';
+        }
+      }, 1000);
+    };
+
+    window.finishAdCount = () => {
+      if (!pendingVideo) return;
+      const key = pendingVideo.key;
+      const item = pendingVideo.item;
+      const requiredAds = pendingVideo.requiredAds;
+      const isPremium = pendingVideo.isPremium;
+
+      videoAdProgress[key] = (videoAdProgress[key] || 0) + 1;
+
+      if (videoAdProgress[key] >= requiredAds) {
+        closeLockModal();
+        renderVideos();
+        openVideoPlayer(item.videoUrl, item.title);
+      } else {
+        openLockModal(key, item, videoAdProgress[key], requiredAds, isPremium);
+      }
+    };
+
+    window.closeLockModal = () => {
+      if (adTimerInterval) clearInterval(adTimerInterval);
+      const modal = document.getElementById('lockModal');
+      const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
+      if(lockBox) lockBox.className = "lock-box";
+      modal.style.display = 'none';
+      pendingVideo = null;
+    };
+
+    window.switchTab = (tabName, navElement) => {
+      currentTab = tabName;
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      navElement.classList.add('active');
+
+      const heroSlider = document.getElementById('heroSlider');
+      const catBar = document.getElementById('catBar');
+
+      if (tabName === "mylist" || tabName === "trending" || tabName === "profile") {
+        heroSlider.style.display = 'none';
+        catBar.style.display = 'none';
+      } else {
+        heroSlider.style.display = 'flex';
+        catBar.style.display = 'flex';
+      }
+
+      renderVideos();
+    };
+
+    function renderProfileSection(container) {
+      if (!currentUser) {
+        container.innerHTML = `
+          <div class="profile-card">
+            <h3 style="margin-bottom:8px;">Login or Register</h3>
+            <p style="font-size:12px; color:#666; margin-bottom:15px;">গুগল অথবা ইমেইল দিয়ে লগইন করে আপনার প্রোফাইল অ্যাক্সেস করুন।</p>
+            <button class="auth-btn btn-google" onclick="loginWithGoogle()">
+              <svg class="google-icon" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              Continue with Google
+            </button>
+            <hr style="margin:15px 0; border:none; border-top:1px solid #eee;">
+            <div id="authFormArea">
+              ${renderLoginForm()}
+            </div>
+          </div>
+        `;
+      } else {
+        const photo = currentUser.photoURL || 'https://via.placeholder.com/90';
+        container.innerHTML = `
+          <div class="profile-card">
+            <div class="profile-img-container">
+              <img src="${photo}" id="userAvatar" class="profile-img" oncontextmenu="return false;">
+              <label for="imgUpload" class="upload-btn"><i class="fa-solid fa-camera"></i></label>
+              <input type="file" id="imgUpload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+            </div>
+            <div class="profile-name">${currentUser.displayName || 'User'}</div>
+            <div class="profile-email">${currentUser.email}</div>
+            <p style="font-size:12px; margin-bottom:12px; color: ${userAccessStatus === 'approved' ? '#28a745' : '#e50914'};">
+              Status: <b>${userAccessStatus.toUpperCase()}</b>
+            </p>
+            <button class="auth-btn btn-danger" onclick="logoutUser()">
+              <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function renderLoginForm() {
+      return `
+        <form onsubmit="handleEmailLogin(event)" class="auth-form">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="Enter your email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPass" required placeholder="Enter password">
+          </div>
+          <button type="submit" class="auth-btn btn-primary">Sign In</button>
+          <div class="auth-toggle" onclick="toggleAuthForm('register')">Don't have an account? Register</div>
+        </form>
+      `;
+    }
+
+    function renderRegisterForm() {
+      return `
+        <form onsubmit="handleEmailRegister(event)" class="auth-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="regName" required placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" required placeholder="Enter valid email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="regPass" required placeholder="Create password">
+          </div>
+          <button type="submit" class="auth-btn btn-primary">Create Account</button>
+          <div class="auth-toggle" onclick="toggleAuthForm('login')">Already have an account? Sign In</div>
+        </form>
+      `;
+    }
+
+    window.toggleAuthForm = (type) => {
+      const formArea = document.getElementById('authFormArea');
+      if (type === 'register') {
+        formArea.innerHTML = renderRegisterForm();
+      } else {
+        formArea.innerHTML = renderLoginForm();
+      }
+    };
+
+    window.loginWithGoogle = () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider).then(() => {
+        checkUserAccessStatus();
+        renderVideos();
+      }).catch(err => alert(err.message));
+    };
+
+    window.handleEmailRegister = (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value;
+      const email = document.getElementById('regEmail').value;
+      const pass = document.getElementById('regPass').value;
+
+      createUserWithEmailAndPassword(auth, email, pass).then((userCredential) => {
+        const user = userCredential.user;
+        updateProfile(user, { displayName: name });
+        sendEmailVerification(user).then(() => {
+          alert("রেজিস্ট্রেশন সফল হয়েছে! ইমেইল ভেরিফাই করুন।");
+          signOut(auth);
+          toggleAuthForm('login');
+        });
+      }).catch(err => alert(err.message));
+    };
+
+    window.handleEmailLogin = (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
+
+      signInWithEmailAndPassword(auth, email, pass).then((userCredential) => {
+        if (!userCredential.user.emailVerified) {
+          alert("আপনার ইমেইল ভেরিফাই করা হয়নি!");
+          signOut(auth);
+        } else {
+          checkUserAccessStatus();
+          renderVideos();
+        }
+      }).catch(err => alert(err.message));
+    };
+
+    window.logoutUser = () => {
+      signOut(auth).then(() => {
+        userAccessStatus = 'none';
+        renderVideos();
+      });
+    };
+
+    window.handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      alert("ছবি আপলোড হচ্ছে...");
+
+      fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.data && data.data.url) {
+          const newPhotoUrl = data.data.url;
+          updateProfile(auth.currentUser, { photoURL: newPhotoUrl }).then(() => {
+            alert("প্রোফাইল পিকচার আপডেট হয়েছে!");
+            renderVideos();
+          });
+        }
+      });
+    };
+
+    function updateProfileUI() {
+      const profileNavBtn = document.getElementById('navProfileIcon');
+      if (profileNavBtn) {
+        if (currentUser && currentUser.photoURL) {
+          profileNavBtn.outerHTML = `<img src="${currentUser.photoURL}" id="navProfileIcon">`;
+        } else {
+          profileNavBtn.outerHTML = `<i class="fa-solid fa-user" id="navProfileIcon"></i>`;
+        }
+      }
+    }
+
+    window.toggleSearch = () => {
+      const searchBox = document.getElementById('searchBox');
+      const searchInput = document.getElementById('searchInput');
+      if (searchBox.style.display === 'block') {
+        searchBox.style.display = 'none';
+        searchQuery = "";
+        searchInput.value = "";
+        renderVideos();
+      } else {
+        searchBox.style.display = 'block';
+        searchInput.focus();
+      }
+    };
+
+    window.handleSearch = (e) => {
+      searchQuery = e.target.value.trim();
+      renderVideos();
+    };
+
+    // YouTube Responsive Player
+    window.openVideoPlayer = (url, title) => {
+      const modal = document.getElementById('playerModal');
+      const videoContainer = document.getElementById('videoPlayerContainer');
+      document.getElementById('modalTitle').innerText = title;
+      
+      if (url.includes('<iframe') || url.includes('http')) {
+        if (url.includes('<iframe')) {
+          videoContainer.innerHTML = url;
+          const iframe = videoContainer.querySelector('iframe');
+          if (iframe) {
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+          }
+        } else if (url.endsWith('.mp4') || url.endsWith('.webm') || url.includes('cloudinary')) {
+          videoContainer.innerHTML = `<video src="${url}" controls autoplay controlsList="nodownload" allowfullscreen oncontextmenu="return false;"></video>`;
+        } else {
+          videoContainer.innerHTML = `<iframe src="${url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>`;
+        }
+      }
+
+      modal.style.display = 'flex';
+    };
+
+    window.closePlayer = () => {
+      const modal = document.getElementById('playerModal');
+      const videoContainer = document.getElementById('videoPlayerContainer');
+      videoContainer.innerHTML = "";
+      modal.style.display = 'none';
+    };
+  </script>
+</head>
+<body oncontextmenu="return false;">
+
+  <!-- Preloader Screen -->
+  <div id="preloader">
+    <img src="https://i.ibb.co/Gf5TySRg/1000109014.png" alt="Website Logo" class="preloader-logo">
+    <div class="preloader-title">
+      <i class="fa-solid fa-circle-play"></i> SECRET<span>VIDEO</span>
+    </div>
+  </div>
+
+  <!-- Dynamic Ad Scripts Container -->
+  <div id="popunderAdContainer"></div>
+  <div id="socialBarAdContainer"></div>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="logo">
+      <i class="fa-solid fa-circle-play"></i> SECRET<span>VIDEO</span>
+    </a>
+    <div class="header-icons">
+      <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch()" title="Search Video"></i>
+      <i class="fa-solid fa-bell"></i>
+    </div>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-box" id="searchBox">
+    <div class="search-input-wrapper">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search videos by title..." oninput="handleSearch(event)">
+    </div>
+  </div>
+
+  <!-- Top Ad -->
+  <div id="topAdBox" class="ad-container"></div>
+
+  <!-- Banner Slider -->
+  <div class="hero-slider-wrapper" id="heroSlider"></div>
+
+  <!-- Category Bar -->
+  <div class="cat-bar" id="catBar"></div>
+
+  <!-- Main Content Area -->
+  <div id="mainContentContainer"></div>
+
+  <!-- Player Modal -->
+  <div class="player-modal" id="playerModal">
+    <span class="close-modal" onclick="closePlayer()">&times;</span>
+    <div class="video-box-wrapper" id="videoPlayerContainer"></div>
+    <div class="modal-title" id="modalTitle"></div>
+  </div>
+
+  <!-- Lock Modal -->
+  <div class="player-modal" id="lockModal">
+    <span class="close-modal" onclick="closeLockModal()">&times;</span>
+    <div class="lock-box"></div>
+  </div>
+
+  <!-- Bottom Ad -->
+  <div id="bottomAdBox" class="ad-container"></div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <a onclick="switchTab('home', this)" class="nav-link active">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a onclick="switchTab('trending', this)" class="nav-link">
+      <i class="fa-solid fa-fire"></i>
+      <span>Trending</span>
+    </a>
+    <a onclick="switchTab('mylist', this)" class="nav-link">
+      <i class="fa-solid fa-bookmark"></i>
+      <span>My List</span>
+    </a>
+    <a onclick="switchTab('profile', this)" class="nav-link">
+      <i class="fa-solid fa-user" id="navProfileIcon"></i>
+      <span>Profile</span>
+    </a>
+  </nav>
+
 </body>
 </html>
