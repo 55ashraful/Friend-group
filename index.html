@@ -1438,6 +1438,40 @@
             'params' : {}
           };
         </script>
+      // ২. টাইমার ও ভিডিও আনলক করার জাভাস্ক্রিপ্ট কোড
+function startVideoTimer(videoUrl, title) {
+    window.currentVideoUrl = videoUrl;
+    window.currentVideoTitle = title;
+
+    let modal = document.getElementById('adModal');
+    modal.style.display = 'flex';
+
+    let timeLeft = 10;
+    let timerText = document.getElementById('timerText');
+    let closeBtn = document.getElementById('closeBtn');
+    
+    closeBtn.style.display = "none";
+    timerText.innerHTML = "১০ সেকেন্ড অপেক্ষা করুন...";
+
+    let countdown = setInterval(function() {
+        timeLeft--;
+        timerText.innerHTML = timeLeft + " সেকেন্ড বাকি আছে...";
+        
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerText.innerHTML = "বিজ্ঞাপন দেখা শেষ!";
+            closeBtn.style.display = "block";
+        }
+    }, 1000);
+}
+
+function unlockVideo() {
+    document.getElementById('adModal').style.display = 'none';
+    if (window.currentVideoUrl) {
+        openVideoPlayer(window.currentVideoUrl, window.currentVideoTitle);
+    }
+}
+          
         <script src="https://www.highrevenueformat.com/6b9132bcec7b42415dc099b65bebd2bd/invoke.js"></script>
     </div>
 
