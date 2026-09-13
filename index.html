@@ -407,7 +407,7 @@
       if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
     };
 
-    // ✅ নতুন: জুম সম্পূর্ণ ব্লক (Ctrl+স্ক্রল, পিঞ্চ জুম, ডাবল ট্যাপ জুম)
+    // জুম সম্পূর্ণ ব্লক (Ctrl+স্ক্রল, পিঞ্চ জুম, ডাবল ট্যাপ জুম)
     document.addEventListener('wheel', function(e){ if (e.ctrlKey) e.preventDefault(); }, { passive: false });
     document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
     document.addEventListener('gesturechange', function(e){ e.preventDefault(); });
@@ -481,7 +481,6 @@
 
     let adUrlData = "";
     let adInterval = 0;
-    let clickAdEnabled = true; // ✅ নতুন: এডমিন প্যানেল থেকে ক্লিক এড ON/OFF কন্ট্রোল
     let nativeAdCodeData = "";
     let allVideos = {};
     let premiumVideos = {};
@@ -497,9 +496,8 @@
       const config = snapshot.val();
       if (config) {
         adUrlData = config.adUrl || "";
+        // ✅ এডমিন প্যানেলে সংখ্যা দিয়ে কন্ট্রোল: 0 দিলে স্ক্রিন ক্লিক এড সম্পূর্ণ বন্ধ; 10/15/20 হলে তত মিনিট পর পর চলবে
         adInterval = config.adInterval !== undefined ? parseInt(config.adInterval) : 0;
-        // ✅ নতুন: এডমিন প্যানেলে টগল সেট না থাকলে ডিফল্ট চালু থাকবে
-        clickAdEnabled = (config.clickAdEnabled === undefined) ? true : (config.clickAdEnabled === "on" || config.clickAdEnabled === true || config.clickAdEnabled === "true");
         nativeAdCodeData = config.nativeAdCode || "";
 
         if (config.topBannerCode) renderAnyAd('topAdBox', config.topBannerCode);
@@ -511,7 +509,8 @@
 
     // Universal Screen Click Handler (Admin Set Interval Popunder Trigger)
     document.addEventListener('click', function(e) {
-      if (!adUrlData || !clickAdEnabled) return; // ✅ এডমিন টগল OFF করলে ক্লিক এড বন্ধ
+      // ✅ এডমিন 0 দিলে বা Direct Link খালি থাকলে স্ক্রিন ক্লিক এড সম্পূর্ণ বন্ধ
+      if (!adUrlData || adInterval <= 0) return;
       
       // Ignore clicks on close buttons or inputs to avoid frustrating the user
       if (e.target.closest('.close-modal, input, textarea, select, button, a')) return;
@@ -519,8 +518,8 @@
       const lastClickAdTime = localStorage.getItem('lastClickAdTime') || 0;
       const now = Date.now();
 
-      // এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল (0 = প্রতি ক্লিকে)
-      const intervalMs = adInterval > 0 ? adInterval * 60 * 1000 : 0;
+      // এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল
+      const intervalMs = adInterval * 60 * 1000;
       if (now - lastClickAdTime >= intervalMs) {
         let targetUrl = adUrlData.trim();
         if (targetUrl.includes("src=")) {
@@ -714,7 +713,7 @@
 
         keys.forEach((key, index) => {
           const item = premiumVideos[key];
-          if (!item || typeof item !== 'object') return; // ✅ ভাঙা ডেটা থাকলে স্কিপ — পুরো লিস্ট আর লুকাবে না
+          if (!item || typeof item !== 'object') return; // ভাঙা ডেটা থাকলে স্কিপ — পুরো লিস্ট আর লুকাবে না
           if ((item.title || '').toLowerCase().includes(searchQuery.toLowerCase())) {
             count++;
             premGrid.appendChild(createCard(key, item, false, true));
@@ -884,12 +883,14 @@
       let key, item, videoUrl, title, specificAdUrl;
 
       if (secondArg && typeof secondArg === 'object') {
+        // কার্ড থেকে: handleNormalVideoClick(key, item)
         key = firstArg;
         item = secondArg;
         videoUrl = item.videoUrl;
         title = item.title || 'Untitled';
         specificAdUrl = item.adUrl;
       } else {
+        // ব্যানার থেকে: handleNormalVideoClick(videoUrl, title)
         videoUrl = firstArg;
         title = secondArg || 'Untitled';
         specificAdUrl = thirdArg;
@@ -899,21 +900,25 @@
 
       if (!videoUrl) { alert("ভিডিও লিংক পাওয়া যায়নি!"); return; }
 
+      // এড লিংক: ভিডিওর নিজের Adsterra Direct Link, না থাকলে গ্লোবাল Direct Link
       const adSource = (specificAdUrl && String(specificAdUrl).trim()) || (adUrlData ? adUrlData.trim() : "");
 
+      // কোনো এড লিংক না থাকলে সরাসরি প্লে
       if (!adSource) {
         openVideoPlayer(videoUrl, title);
         return;
       }
 
+      // ব্যানার থেকে সরাসরি প্লে (ব্যানারে এড গেট লাগবে না)
       if (!key) {
         openVideoPlayer(videoUrl, title);
         return;
       }
 
+      // এডমিন যতটি এড সেট করেছে (সেট না করলে ডিফল্ট ১টি)
       const requiredAds = (item.adLimit !== undefined && parseInt(item.adLimit) > 0) ? parseInt(item.adLimit) : 1;
 
-      // প্রতিবার ক্লিকে এড নতুন করে শুরু হবে
+      // প্রতিবার ক্লিকে এড নতুন করে শুরু হবে — বের হয়ে আবার ক্লিক করলেও আবার এড আসবে
       videoAdProgress[key] = 0;
       openLockModal(key, item, 0, requiredAds, false);
     };
@@ -969,6 +974,7 @@
       switchTab('profile', document.querySelectorAll('.nav-link')[3]);
     };
 
+    // টাইটেলে কোট থাকলেও যেন বাটন না ভাঙে — তাই pendingVideo ব্যবহার করা হয়েছে
     window.openLockModal = (key, item, currentCount, requiredAds, isPremium) => {
       pendingVideo = { key: key, item: item, requiredAds: requiredAds, isPremium: isPremium !== undefined ? isPremium : true };
       const modal = document.getElementById('lockModal');
@@ -1002,6 +1008,7 @@
       }
     };
 
+    // এড দেখানো — ভিডিওর নিজের এড লিংক থাকলে সেটাই খুলবে, নাহলে গ্লোবাল Direct Link
     window.watchAdForVideo = () => {
       if (!pendingVideo) return;
       const item = pendingVideo.item;
