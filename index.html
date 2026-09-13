@@ -407,7 +407,6 @@
       if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
     };
 
-    // জুম সম্পূর্ণ ব্লক (Ctrl+স্ক্রল, পিঞ্চ জুম, ডাবল ট্যাপ জুম)
     document.addEventListener('wheel', function(e){ if (e.ctrlKey) e.preventDefault(); }, { passive: false });
     document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
     document.addEventListener('gesturechange', function(e){ e.preventDefault(); });
@@ -491,12 +490,10 @@
     let currentTab = "home"; 
     let pinnedVideos = JSON.parse(localStorage.getItem('pinnedVideos') || '[]');
 
-    // Read Admin Ad Configuration
     onValue(ref(db, 'settings/adConfig'), (snapshot) => {
       const config = snapshot.val();
       if (config) {
         adUrlData = config.adUrl || "";
-        // ✅ এডমিন প্যানেলে সংখ্যা দিয়ে কন্ট্রোল: 0 দিলে স্ক্রিন ক্লিক এড সম্পূর্ণ বন্ধ; 10/15/20 হলে তত মিনিট পর পর চলবে
         adInterval = config.adInterval !== undefined ? parseInt(config.adInterval) : 0;
         nativeAdCodeData = config.nativeAdCode || "";
 
@@ -507,19 +504,14 @@
       }
     });
 
-    // Universal Screen Click Handler (Admin Set Interval Popunder Trigger)
     document.addEventListener('click', function(e) {
-      // ✅ এডমিন 0 দিলে বা Direct Link খালি থাকলে স্ক্রিন ক্লিক এড সম্পূর্ণ বন্ধ
       if (!adUrlData || adInterval <= 0) return;
-      
-      // Ignore clicks on close buttons or inputs to avoid frustrating the user
       if (e.target.closest('.close-modal, input, textarea, select, button, a')) return;
 
       const lastClickAdTime = localStorage.getItem('lastClickAdTime') || 0;
       const now = Date.now();
-
-      // এডমিন প্যানেলে সেট করা মিনিট ইন্টারভাল
       const intervalMs = adInterval * 60 * 1000;
+      
       if (now - lastClickAdTime >= intervalMs) {
         let targetUrl = adUrlData.trim();
         if (targetUrl.includes("src=")) {
@@ -575,7 +567,6 @@
       }
     }
 
-    // Read Admin Categories
     onValue(ref(db, 'categories'), (snapshot) => {
       categoriesList = [];
       const data = snapshot.val();
@@ -587,14 +578,12 @@
       renderCategoryBar();
     });
 
-    // Read Admin Normal Videos
     onValue(ref(db, 'videos'), (snapshot) => {
       allVideos = snapshot.val() || {};
       renderCategoryBar();
       renderVideos();
     });
 
-    // Read Admin Premium Videos
     onValue(ref(db, 'premiumVideos'), (snapshot) => {
       premiumVideos = snapshot.val() || {};
       if (currentTab === 'trending') renderVideos();
@@ -627,7 +616,6 @@
       renderVideos();
     };
 
-    // Read Admin Hero Banners
     onValue(ref(db, 'heroBanners'), (snapshot) => {
       const heroSlider = document.getElementById('heroSlider');
       heroSlider.innerHTML = "";
@@ -713,7 +701,7 @@
 
         keys.forEach((key, index) => {
           const item = premiumVideos[key];
-          if (!item || typeof item !== 'object') return; // ভাঙা ডেটা থাকলে স্কিপ — পুরো লিস্ট আর লুকাবে না
+          if (!item || typeof item !== 'object') return;
           if ((item.title || '').toLowerCase().includes(searchQuery.toLowerCase())) {
             count++;
             premGrid.appendChild(createCard(key, item, false, true));
@@ -856,7 +844,8 @@
         if (isPremium) {
           handlePremiumVideoClick(key, item);
         } else {
-          handleNormalVideoClick(key, item);
+          // এখানে ১০ সেকেন্ডের সবুজ টাইমার অ্যাড মোডাল কল করা হলো
+          startVideoTimer(item.videoUrl, item.title);
         }
       };
 
@@ -878,57 +867,6 @@
       return card;
     }
 
-    // ফ্রি ভিডিও — প্রতিবার ক্লিকে আগে এড দেখাবে, তারপর ভিডিও প্লে হবে
-    window.handleNormalVideoClick = (firstArg, secondArg, thirdArg) => {
-      let key, item, videoUrl, title, specificAdUrl;
-
-      if (secondArg && typeof secondArg === 'object') {
-        // কার্ড থেকে: handleNormalVideoClick(key, item)
-        key = firstArg;
-        item = secondArg;
-        videoUrl = item.videoUrl;
-        title = item.title || 'Untitled';
-        specificAdUrl = item.adUrl;
-      } else {
-        // ব্যানার থেকে: handleNormalVideoClick(videoUrl, title)
-        videoUrl = firstArg;
-        title = secondArg || 'Untitled';
-        specificAdUrl = thirdArg;
-        key = null;
-        item = { videoUrl: videoUrl, title: title, adUrl: specificAdUrl };
-      }
-
-      if (!videoUrl) { alert("ভিডিও লিংক পাওয়া যায়নি!"); return; }
-
-      // এড লিংক: ভিডিওর নিজের Adsterra Direct Link, না থাকলে গ্লোবাল Direct Link
-      const adSource = (specificAdUrl && String(specificAdUrl).trim()) || (adUrlData ? adUrlData.trim() : "");
-
-      // কোনো এড লিংক না থাকলে সরাসরি প্লে
-      if (!adSource) {
-        openVideoPlayer(videoUrl, title);
-        return;
-      }
-
-      // ব্যানার থেকে সরাসরি প্লে (ব্যানারে এড গেট লাগবে না)
-      if (!key) {
-        openVideoPlayer(videoUrl, title);
-        return;
-      }
-
-      // এডমিন যতটি এড সেট করেছে (সেট না করলে ডিফল্ট ১টি)
-      const requiredAds = (item.adLimit !== undefined && parseInt(item.adLimit) > 0) ? parseInt(item.adLimit) : 1;
-
-      // প্রতিবার ক্লিকে এড নতুন করে শুরু হবে — বের হয়ে আবার ক্লিক করলেও আবার এড আসবে
-      videoAdProgress[key] = 0;
-      openLockModal(key, item, 0, requiredAds, false);
-    };
-
-    window.startNormalVideoAfterAd = (videoUrl, title) => {
-      closeLockModal();
-      openVideoPlayer(videoUrl, title);
-    };
-
-    // প্রিমিয়াম ভিডিও — লগইন ছাড়া ক্লিক করলে রেজিস্ট্রেশন মেসেজ বক্স আসবে
     function handlePremiumVideoClick(key, item) {
       if (!currentUser) {
         showRegisterRequiredModal();
@@ -940,7 +878,6 @@
         return;
       }
 
-      // এডমিন প্যানেলে সেট করা এড সংখ্যা (৫টা / ১০টা — যা সেট করবেন)
       const requiredAds = item.adLimit !== undefined ? parseInt(item.adLimit) : 5;
       if (!videoAdProgress[key]) videoAdProgress[key] = 0;
 
@@ -951,7 +888,6 @@
       }
     }
 
-    // রেজিস্ট্রেশন প্রয়োজন মেসেজ বক্স
     window.showRegisterRequiredModal = () => {
       const modal = document.getElementById('lockModal');
       const lockBox = modal.querySelector('.lock-box, .timer-overlay-card');
@@ -974,7 +910,6 @@
       switchTab('profile', document.querySelectorAll('.nav-link')[3]);
     };
 
-    // টাইটেলে কোট থাকলেও যেন বাটন না ভাঙে — তাই pendingVideo ব্যবহার করা হয়েছে
     window.openLockModal = (key, item, currentCount, requiredAds, isPremium) => {
       pendingVideo = { key: key, item: item, requiredAds: requiredAds, isPremium: isPremium !== undefined ? isPremium : true };
       const modal = document.getElementById('lockModal');
@@ -1008,7 +943,6 @@
       }
     };
 
-    // এড দেখানো — ভিডিওর নিজের এড লিংক থাকলে সেটাই খুলবে, নাহলে গ্লোবাল Direct Link
     window.watchAdForVideo = () => {
       if (!pendingVideo) return;
       const item = pendingVideo.item;
@@ -1296,7 +1230,6 @@
       renderVideos();
     };
 
-    // YouTube Responsive Player
     window.openVideoPlayer = (url, title) => {
       const modal = document.getElementById('playerModal');
       const videoContainer = document.getElementById('videoPlayerContainer');
@@ -1409,74 +1342,76 @@
       <span>Profile</span>
     </a>
   </nav>
-<!-- সবুজ রঙের টাইমার ও অ্যাড মোডাল বক্স -->
-<div id="adModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; align-items:center; justify-content:center;">
-  
-  <div style="background:#2ecc71; padding:20px; border-radius:15px; color:#fff; width:90%; max-width:400px; position:relative; box-shadow: 0 5px 20px rgba(0,0,0,0.4); font-family: sans-serif;">
-    
-    <!-- ক্রস বাটন (১০ সেকেন্ড শেষ হলে আসবে) -->
-    <span id="closeBtn" style="display:none; position:absolute; top:12px; right:15px; font-size:22px; cursor:pointer; font-weight:bold;" onclick="unlockVideo()">✕</span>
 
-    <div style="display: flex; align-items: center; margin-top: 10px;">
-      <div style="background:#fff; padding:12px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; margin-right:15px;">
-        <span style="font-size: 32px;">🔔</span>
+  <!-- সবুজ রঙের টাইমার ও অ্যাড মোডাল বক্স -->
+  <div id="adModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center;">
+    <div style="background:#2ecc71; padding:20px; border-radius:15px; color:#fff; width:90%; max-width:400px; position:relative; box-shadow: 0 5px 20px rgba(0,0,0,0.4); font-family: sans-serif;">
+      
+      <!-- ক্রস বাটন (১০ সেকেন্ড শেষ হলে আসবে) -->
+      <span id="closeBtn" style="display:none; position:absolute; top:12px; right:15px; font-size:22px; cursor:pointer; font-weight:bold;" onclick="unlockVideo()">✕</span>
+
+      <div style="display: flex; align-items: center; margin-top: 10px;">
+        <div style="background:#fff; padding:12px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; margin-right:15px;">
+          <span style="font-size: 32px;">🔔</span>
+        </div>
+        <div>
+          <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">ভিডিও আনলক</div>
+          <div id="timerText" style="font-size: 15px; font-weight: 600;">১০ সেকেন্ড অপেক্ষা করুন...</div>
+        </div>
       </div>
-      <div>
-        <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">ভিডিও আনলক</div>
-        <div id="timerText" style="font-size: 15px; font-weight: 600;">১০ সেকেন্ড অপেক্ষা করুন...</div>
+
+      <!-- আপনার Adsterra ব্যানার অ্যাড কোড -->
+      <div style="margin-top: 15px; text-align: center; background: #fff; padding: 5px; border-radius: 8px; overflow: hidden;">
+          <script>
+            atOptions = {
+              'key' : '6b9132bcec7b42415dc099b65bebd2bd',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script src="https://www.highrevenueformat.com/6b9132bcec7b42415dc099b65bebd2bd/invoke.js"></script>
       </div>
+
     </div>
-
-    <!-- আপনার Adsterra ব্যানার অ্যাড কোড -->
-    <div style="margin-top: 15px; text-align: center; background: #fff; padding: 5px; border-radius: 8px; overflow: hidden;">
-        <script>
-          atOptions = {
-            'key' : '6b9132bcec7b42415dc099b65bebd2bd',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-      // ২. টাইমার ও ভিডিও আনলক করার জাভাস্ক্রিপ্ট কোড
-function startVideoTimer(videoUrl, title) {
-    window.currentVideoUrl = videoUrl;
-    window.currentVideoTitle = title;
-
-    let modal = document.getElementById('adModal');
-    modal.style.display = 'flex';
-
-    let timeLeft = 10;
-    let timerText = document.getElementById('timerText');
-    let closeBtn = document.getElementById('closeBtn');
-    
-    closeBtn.style.display = "none";
-    timerText.innerHTML = "১০ সেকেন্ড অপেক্ষা করুন...";
-
-    let countdown = setInterval(function() {
-        timeLeft--;
-        timerText.innerHTML = timeLeft + " সেকেন্ড বাকি আছে...";
-        
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            timerText.innerHTML = "বিজ্ঞাপন দেখা শেষ!";
-            closeBtn.style.display = "block";
-        }
-    }, 1000);
-}
-
-function unlockVideo() {
-    document.getElementById('adModal').style.display = 'none';
-    if (window.currentVideoUrl) {
-        openVideoPlayer(window.currentVideoUrl, window.currentVideoTitle);
-    }
-}
-          
-        <script src="https://www.highrevenueformat.com/6b9132bcec7b42415dc099b65bebd2bd/invoke.js"></script>
-    </div>
-
   </div>
-</div>
-  
+
+  <!-- টাইমার ও ভিডিও আনলক করার জাভাস্ক্রিপ্ট কোড -->
+  <script>
+  function startVideoTimer(videoUrl, title) {
+      window.currentVideoUrl = videoUrl;
+      window.currentVideoTitle = title;
+
+      let modal = document.getElementById('adModal');
+      modal.style.display = 'flex';
+
+      let timeLeft = 10;
+      let timerText = document.getElementById('timerText');
+      let closeBtn = document.getElementById('closeBtn');
+      
+      closeBtn.style.display = "none";
+      timerText.innerHTML = "১০ সেকেন্ড অপেক্ষা করুন...";
+
+      let countdown = setInterval(function() {
+          timeLeft--;
+          timerText.innerHTML = timeLeft + " সেকেন্ড বাকি আছে...";
+          
+          if (timeLeft <= 0) {
+              clearInterval(countdown);
+              timerText.innerHTML = "বিজ্ঞাপন দেখা শেষ!";
+              closeBtn.style.display = "block";
+          }
+      }, 1000);
+  }
+
+  function unlockVideo() {
+      document.getElementById('adModal').style.display = 'none';
+      if (window.currentVideoUrl) {
+          openVideoPlayer(window.currentVideoUrl, window.currentVideoTitle);
+      }
+  }
+  </script>
+
 </body>
 </html>
